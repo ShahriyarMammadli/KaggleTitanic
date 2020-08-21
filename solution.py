@@ -31,7 +31,7 @@ print(trainDf.shape)
 # Drop NAs for age column
 trainDf = trainDf[trainDf['Age'].notna()]
 # Drop id and name columns
-trainDf.drop(['PassengerId', 'Name'], axis=1, inplace=True)
+trainDf.drop(['PassengerId', 'Name', 'Fare', 'Age'], axis=1, inplace=True)
 print("------------------ Shape: ------------------")
 print(trainDf.shape)
 # Process Ticket since it has different prefixes for different types
@@ -45,6 +45,7 @@ print(trainDf.columns)
 
 # Test dataframe data preparation
 testDf = pd.read_csv('data/test.csv')
+originalDf = testDf
 # Read actual results
 actualDf = pd.read_csv('data/gender_submission.csv')
 testDf = pd.merge(testDf, actualDf, left_on='PassengerId', right_on='PassengerId')
@@ -53,11 +54,11 @@ print(testDf.shape)
 print("-------------- Number of NAs: --------------")
 print(testDf.isna().sum())
 # Embarked has one missing values, so drop NAs for that column
-testDf = testDf[testDf['Fare'].notna()]
+#testDf = testDf[testDf['Fare'].notna()]
 # Drop id and name columns, Cabin
-testDf.drop(['PassengerId', 'Name', 'Cabin'], axis=1, inplace=True)
+testDf.drop(['PassengerId', 'Name', 'Cabin', 'Fare', 'Age'], axis=1, inplace=True)
 # Drop NAs for age column
-testDf = testDf[testDf['Age'].notna()]
+# testDf = testDf[testDf['Age'].notna()]
 print("------------------ Shape: ------------------")
 print(testDf.shape)
 # Process Ticket since it has different prefixes for different types
@@ -87,6 +88,9 @@ print(testDf.shape)
 clf = svm.SVC(kernel='linear')
 # Fit data
 clf = clf.fit(trainDf.drop('Survived', 1), trainDf[['Survived']])
-predictions = clf.predict(testDf.drop('Survived', 1))
-
-print(hf.calculateAccuracy(testDf['Survived'],predictions))
+predicted = clf.predict(testDf.drop('Survived', 1))
+originalDf[['Survived']] = predicted
+print(hf.calculateAccuracy(testDf['Survived'],predicted))
+originalDf[['PassengerId', 'Survived']].to_csv("submission.csv", header=True, index=False)
+# TODO: user Age and Fare
+# TODO: Do ensemble
