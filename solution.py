@@ -7,13 +7,11 @@ import helperFunctions as hf
 # Train dataframe data preparation
 trainDf = pd.read_csv('data/train.csv')
 # See the columns in the dataframe
-print("------------------ Head: ------------------")
-print(trainDf.head())
 # Return the number of NAs for each column
-print("-------------- Number of NAs: --------------")
+print("--------- Number of NAs in Train Set: ---------")
 print(trainDf.isna().sum())
 # The number of unique values for each column
-print("--------- Number of unique values: ---------")
+print("---- Number of unique values in Train Set: ----")
 print(trainDf.nunique())
 # Embarked has only two missing values, so drop NAs for that column
 trainDf = trainDf[trainDf['Embarked'].notna()]
@@ -28,7 +26,7 @@ originalDf = testDf
 # Read actual results
 actualDf = pd.read_csv('data/gender_submission.csv')
 testDf = pd.merge(testDf, actualDf, left_on='PassengerId', right_on='PassengerId')
-print("-------------- Number of NAs: --------------")
+print("--------- Number of NAs in Test Set: ---------")
 print(testDf.isna().sum())
 # Drop id and name columns, Cabin
 testDf = testDf.drop(['PassengerId'], axis=1)
@@ -65,5 +63,3 @@ ensembleDf.to_csv("ensembleRes.csv", header=True, index=False)
 originalDf[['Survived']] = predictedGB
 originalDf[['PassengerId', 'Survived']].to_csv("submission.csv", header=True, index=False)
 
-
-# TODO: Use embarked, tuning the model
