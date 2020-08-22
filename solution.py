@@ -66,4 +66,4 @@ originalDf[['Survived']] = predictedGB
 originalDf[['PassengerId', 'Survived']].to_csv("submission.csv", header=True, index=False)
 
 
-# TODO: Use embarked
+# TODO: Use embarked, tuning the model
