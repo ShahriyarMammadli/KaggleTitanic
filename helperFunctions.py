@@ -5,17 +5,22 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.preprocessing import LabelEncoder
+
 # Encode dataframe
-def encodeDf(df, vars):
+def oneHotEncoding(df, vars):
     for var in vars:
         # Join the encoded df
         df = df.join(pd.get_dummies(df[var], prefix=var))
     # Drop columns as they are now encoded
     return df.drop(vars, axis=1)
 
+# Convert non-numeric columns into numeric
+def ordinalEncoding(df):
+    return df.apply(LabelEncoder().fit_transform)
 # Analyze ticket categories
+from sklearn.model_selection import train_test_split
 def analyzeTicket(df):
     # Extract ticket type by splitting the string by space
     return df["Ticket"].map(lambda i: 'ordinary' if len(i.split(" ")) == 1 else i.split(" ")[0])

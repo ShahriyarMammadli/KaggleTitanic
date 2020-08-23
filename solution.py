@@ -41,13 +41,18 @@ mergedDf['Name'] = hf.processName(mergedDf)
 mergedDf.loc[mergedDf.loc[pd.isna(mergedDf['Fare']), :].index[0], 'Fare'] = testDf['Fare'].mean()
 # Cabin has missing values these missing values will be filled
 mergedDf['Cabin'] = hf.processCabin(mergedDf)
-mergedDf = hf.encodeDf(mergedDf, ['Sex', 'Pclass', 'SibSp', 'Parch', 'Embarked', 'Ticket', 'Name', 'Cabin'])
+# Use one-hot encoding for SVM or any other non-tree based algorithm
+# mergedDf = hf.oneHotEncoding(mergedDf, ['Sex', 'Pclass', 'SibSp', 'Parch', 'Embarked', 'Ticket', 'Name', 'Cabin'])
+# Use ordinal for tree-based algorithms
+mergedDf = hf.ordinalEncoding(mergedDf)
 # Convert age into categories
 mergedDf = hf.predictAge(mergedDf)
-mergedDf = hf.encodeDf(mergedDf, ['Age'])
+# Use one-hot encoding for SVM or any other non-tree based algorithm
+# mergedDf = hf.oneHotEncoding(mergedDf, ['Age'])
+# Use ordinal for tree-based algorithms
+mergedDf = hf.ordinalEncoding(mergedDf)
 trainDf = mergedDf[0:trainDf.shape[0]]
 testDf = mergedDf[trainDf.shape[0]:mergedDf.shape[0]]
-
 # Modelling
 # SVM model
 # Initialize SVM classifier
@@ -62,4 +67,3 @@ ensembleDf = hf.ensembleRes(ensembleDf)
 ensembleDf.to_csv("ensembleRes.csv", header=True, index=False)
 originalDf[['Survived']] = predictedGB
 originalDf[['PassengerId', 'Survived']].to_csv("submission.csv", header=True, index=False)
-
