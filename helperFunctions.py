@@ -7,6 +7,7 @@ from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
 
 # Encode dataframe
 def oneHotEncoding(df, vars):
@@ -20,7 +21,6 @@ def oneHotEncoding(df, vars):
 def ordinalEncoding(df):
     return df.apply(LabelEncoder().fit_transform)
 # Analyze ticket categories
-from sklearn.model_selection import train_test_split
 def analyzeTicket(df):
     # Extract ticket type by splitting the string by space
     return df["Ticket"].map(lambda i: 'ordinary' if len(i.split(" ")) == 1 else i.split(" ")[0])

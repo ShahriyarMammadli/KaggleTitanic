@@ -5,7 +5,7 @@ import pandas as pd
 import helperFunctions as hf
 
 # Train dataframe data preparation
-trainDf = pd.read_csv('data/train.csv')
+trainDf = pd.read_csv('../Datasets/KaggleTitanic/train.csv')
 # See the columns in the dataframe
 # Return the number of NAs for each column
 print("--------- Number of NAs in Train Set: ---------")
@@ -21,10 +21,10 @@ trainDf = trainDf.drop(['PassengerId'], axis=1)
 trainDf[["Ticket"]] = hf.analyzeTicket(trainDf[["Ticket"]])
 
 # Test dataframe data preparation
-testDf = pd.read_csv('data/test.csv')
+testDf = pd.read_csv('../Datasets/KaggleTitanic/test.csv')
 originalDf = testDf
 # Read actual results
-actualDf = pd.read_csv('data/gender_submission.csv')
+actualDf = pd.read_csv('../Datasets/KaggleTitanic/gender_submission.csv')
 testDf = pd.merge(testDf, actualDf, left_on='PassengerId', right_on='PassengerId')
 print("--------- Number of NAs in Test Set: ---------")
 print(testDf.isna().sum())
