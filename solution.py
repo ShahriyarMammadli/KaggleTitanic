@@ -44,13 +44,12 @@ mergedDf['Cabin'] = hf.processCabin(mergedDf)
 # Use one-hot encoding for SVM or any other non-tree based algorithm
 # mergedDf = hf.oneHotEncoding(mergedDf, ['Sex', 'Pclass', 'SibSp', 'Parch', 'Embarked', 'Ticket', 'Name', 'Cabin'])
 # Use ordinal for tree-based algorithms
-mergedDf = hf.ordinalEncoding(mergedDf)
+mergedDf = hf.ordinalEncoding(mergedDf, ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked'])
 # Convert age into categories
 mergedDf = hf.predictAge(mergedDf)
 # Use one-hot encoding for SVM or any other non-tree based algorithm
-# mergedDf = hf.oneHotEncoding(mergedDf, ['Age'])
+mergedDf = hf.ordinalEncoding(mergedDf, ['Age'])
 # Use ordinal for tree-based algorithms
-mergedDf = hf.ordinalEncoding(mergedDf)
 trainDf = mergedDf[0:trainDf.shape[0]]
 testDf = mergedDf[trainDf.shape[0]:mergedDf.shape[0]]
 # Modelling
@@ -64,6 +63,9 @@ modelGB, predictedGB = hf.gbModel(trainDf, testDf, 'Survived')
 ensembleDf = pd.DataFrame({'SVM': predictedSVM, 'RF': predictedRF, 'GB': predictedGB, 'Ensemble': None})
 ensembleDf = hf.ensembleRes(ensembleDf)
 # Votes of models
-ensembleDf.to_csv("ensembleRes.csv", header=True, index=False)
-originalDf[['Survived']] = predictedGB
+# ensembleDf.to_csv("ensembleRes.csv", header=True, index=False)
+# XGBoost Model
+modelXG, predictedXG = hf.xgbModel(trainDf, testDf, 'Survived')
+originalDf[['Survived']] = predictedXG
 originalDf[['PassengerId', 'Survived']].to_csv("submission.csv", header=True, index=False)
+# mergedDf.to_csv("mergedDf.csv", header=True, index=False)
