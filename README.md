@@ -79,7 +79,7 @@ Before starting the modeling process one-hot-encoding is applied to the variable
 
 
 ## Modelling
-Two techniques are used for modeling one is using single algorithms and the second is to combine those models to put forward an ensemble model. **SVM**, **Random Forest**, **Gradient Boosting** models are used for modeling purposes. Also, an ensemble model is built by using these three models' median results (since the median result of these three models will be the most frequent output for Survived).
+Two techniques are used for modeling one is using single algorithms and the second is to combine those models to put forward an ensemble model. **SVM**, **Random Forest**, **Gradient Boosting**, **XGBoost** models are used for modeling purposes. Also, an ensemble model is built by using these three models' median results (since the median result of these three models will be the most frequent output for Survived).
 
 ## Result
 | Model | Score  |
@@ -87,14 +87,12 @@ Two techniques are used for modeling one is using single algorithms and the seco
 | SVM | 0.76555 |
 | RF | 0.74401 |
 | GB | 0.79186 |
+| XGBoost | 0.78770 |
 | Ensemble | 0.77272 |
 
-As a result, GB performed best with parameters of _n_estimators=100, max_features='sqrt'_. The why of the ensemble model performed worse than GB is due to SVM and RF were mostly failed together to predict for Survived for a sample. 
+Models are tuned using GridSearch algorithm. 
 
 # ToDo
 In total 7-8 hours are spent on building this model, thus, it can be improved by putting additional effort. While analyzing the data, it was obvious that all data samples and features have some information, therefore, all of them must be somehow used to obtain maximum accuracy. Some of the possible improvements are:
 * Predicting the missing samples of Embarked variable
-* Tuning the hyperparameters
-* Eliminating the '.' and '/' characters from the ticket samples (I noticed it after submitting the result)
-* Using other algorithms especially I am curious about CatBoost's performance.
 
